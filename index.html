@@ -225,6 +225,25 @@
 </section>
 
 <!-- ================================================ -->
+<!-- VSL -->
+<!-- ================================================ -->
+<section class="py-12 px-4 sm:px-6 bg-white text-center">
+  <div class="max-w-xl mx-auto">
+    <p class="text-rosa font-bold uppercase tracking-widest text-xs mb-3">Veja como funciona</p>
+    <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-6 leading-tight">
+      Assista antes de decidir —<br /><span class="text-gradient">30 segundos que vão te convencer.</span>
+    </h2>
+    <div class="rounded-3xl overflow-hidden shadow-2xl border border-pink-100">
+      <vturb-smartplayer id="vid-68ed24a2e75a13e32c8b57d2" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+      <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/be67a68d-ae01-4857-8fc1-00001f33298b/players/68ed24a2e75a13e32c8b57d2/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
+    </div>
+    <a href="#planos" class="inline-flex items-center gap-2 mt-6 bg-gradient-rosa text-white font-bold px-7 py-3.5 rounded-full shadow-lg hover:opacity-90 transition-opacity text-sm">
+      → Quero começar agora
+    </a>
+  </div>
+</section>
+
+<!-- ================================================ -->
 <!-- SOCIAL PROOF BAR -->
 <!-- ================================================ -->
 <section class="py-6 bg-pink-50 border-y border-pink-100">
@@ -439,52 +458,97 @@
     </h2>
     <p class="fade-in-up delay-2 text-gray-500 mb-10">Cancele quando quiser. Sem burocracia.</p>
 
+    <!-- AJUSTE 5: Tabela de ancoragem de valor -->
+    <div class="fade-in-up delay-1 max-w-lg mx-auto mb-10 bg-white rounded-2xl border border-pink-100 shadow-sm overflow-hidden text-sm">
+      <div class="bg-rosa/5 px-5 py-3 text-xs font-bold text-rosa uppercase tracking-widest border-b border-pink-100">
+        O que você recebe no Plano Fluência — valor real de cada item
+      </div>
+      <div class="divide-y divide-gray-50">
+        <div class="flex justify-between items-center px-5 py-2.5 text-gray-600"><span>Chat de voz e texto</span><span class="font-semibold text-gray-400 line-through">R$49/mês</span></div>
+        <div class="flex justify-between items-center px-5 py-2.5 text-gray-600"><span>Sessão Torturita</span><span class="font-semibold text-gray-400 line-through">R$29/mês</span></div>
+        <div class="flex justify-between items-center px-5 py-2.5 text-gray-600"><span>Avatar 3D ao vivo</span><span class="font-semibold text-gray-400 line-through">R$79/mês</span></div>
+        <div class="flex justify-between items-center px-5 py-2.5 text-gray-600"><span>Suporte prioritário 24h</span><span class="font-semibold text-gray-400 line-through">R$39/mês</span></div>
+        <div class="flex justify-between items-center px-5 py-3 font-black text-gray-900 bg-pink-50">
+          <span>Total separado</span><span class="line-through text-gray-400">R$196/mês</span>
+        </div>
+        <div class="flex justify-between items-center px-5 py-3 font-black text-rosa bg-rosa/5">
+          <span>Fluência Anual</span><span class="text-xl">R$49/mês</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Toggle -->
-    <div class="fade-in-up delay-2 inline-flex items-center bg-white border border-pink-200 rounded-full p-1 shadow-sm mb-10 gap-1">
+    <div class="fade-in-up delay-2 inline-flex items-center bg-white border border-pink-200 rounded-full p-1 shadow-sm mb-4 gap-1">
       <button onclick="setPlano('mensal')" id="btn-mensal" class="toggle-btn text-sm font-semibold px-5 py-2 rounded-full text-gray-500">Mensal</button>
       <button onclick="setPlano('trimestral')" id="btn-trimestral" class="toggle-btn text-sm font-semibold px-5 py-2 rounded-full text-gray-500">Trimestral</button>
       <button onclick="setPlano('anual')" id="btn-anual" class="toggle-btn active text-sm font-semibold px-5 py-2 rounded-full">Anual ⭐</button>
     </div>
 
     <!-- Badge economia (anual) -->
-    <div id="badge-economia" class="fade-in-up delay-3 inline-block bg-green-100 text-green-700 text-sm font-bold px-4 py-1.5 rounded-full mb-8 border border-green-200">
+    <div id="badge-economia" class="fade-in-up delay-3 inline-block bg-green-100 text-green-700 text-sm font-bold px-4 py-1.5 rounded-full mb-4 border border-green-200">
       💰 Economia de até 72% no plano anual
+    </div>
+
+    <!-- AJUSTE 1: Fluência Anual < Básico Mensal (só no anual) -->
+    <div id="banner-insight" class="fade-in-up delay-3 max-w-lg mx-auto mb-6 bg-amber-50 border border-amber-200 rounded-2xl px-5 py-3 text-sm font-semibold text-amber-800 flex items-center justify-center gap-2">
+      💡 O Plano Fluência Anual (R$49/mês) sai <strong class="text-amber-900">mais barato</strong> que o Básico Mensal (R$69/mês) — e você leva muito mais.
+    </div>
+
+    <!-- AJUSTE 2: Delta entre planos -->
+    <div class="fade-in-up delay-3 max-w-lg mx-auto mb-8 bg-rosa/5 border border-rosa/20 rounded-2xl px-5 py-3 text-sm text-gray-700 flex items-center justify-center gap-2">
+      ✨ Por apenas <strong class="text-rosa" id="delta-valor">R$30</strong> a mais por mês, você tem <strong>Sessão Torturita, Avatar 3D, suporte prioritário e grupo VIP.</strong>
     </div>
 
     <!-- Cards de preço -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
 
-      <!-- PLANO BÁSICO -->
-      <div class="fade-in-up bg-white rounded-3xl p-8 shadow-md border border-pink-100 card-hover text-center flex flex-col">
-        <div class="inline-block bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full mb-4 self-center">Para quem quer começar</div>
-        <h3 class="text-2xl font-black text-gray-900 mb-1">Plano Básico</h3>
-        <div class="my-5">
+      <!-- PLANO BÁSICO — AJUSTE 3: card enfraquecido, features bloqueadas -->
+      <div class="fade-in-up bg-white rounded-3xl p-7 shadow-sm border border-gray-200 card-hover text-center flex flex-col opacity-90">
+        <div class="inline-block bg-gray-100 text-gray-500 text-xs font-bold px-3 py-1 rounded-full mb-4 self-center">Plano de entrada</div>
+        <h3 class="text-xl font-black text-gray-700 mb-1">Plano Básico</h3>
+        <div class="my-4">
           <div class="flex items-end justify-center gap-1">
-            <span class="text-gray-400 text-lg">R$</span>
-            <span class="text-6xl font-black text-gray-900" id="preco-basico">19</span>
-            <span class="text-gray-400 text-base mb-2">/mês</span>
+            <span class="text-gray-400 text-base">R$</span>
+            <span class="text-5xl font-black text-gray-700" id="preco-basico">19</span>
+            <span class="text-gray-400 text-sm mb-1.5">/mês</span>
           </div>
-          <p class="text-gray-400 text-sm" id="obs-basico">cobrado anualmente</p>
-          <div id="badge-basico" class="inline-block mt-2 bg-rosa/10 text-rosa text-xs font-bold px-3 py-1 rounded-full">Mais popular ⭐</div>
+          <p class="text-gray-400 text-xs" id="obs-basico">cobrado anualmente</p>
         </div>
 
-        <ul class="text-left space-y-3 mb-8 flex-1">
-          <li class="flex items-start gap-3 text-sm text-gray-700">
+        <ul class="text-left space-y-2.5 mb-6 flex-1">
+          <li class="flex items-start gap-3 text-sm text-gray-600">
             <span class="text-green-500 font-bold mt-0.5">✅</span>
             <span>Chat de texto e áudio com a Pilarita IA</span>
           </li>
-          <li class="flex items-start gap-3 text-sm text-gray-700">
+          <li class="flex items-start gap-3 text-sm text-gray-600">
             <span class="text-green-500 font-bold mt-0.5">✅</span>
             <span>Ranking de alunas e acompanhamento</span>
           </li>
-          <li class="flex items-start gap-3 text-sm text-gray-700">
+          <li class="flex items-start gap-3 text-sm text-gray-600">
             <span class="text-green-500 font-bold mt-0.5">✅</span>
             <span>Suporte em grupo</span>
           </li>
+          <!-- Features bloqueadas -->
+          <li class="flex items-start gap-3 text-sm text-gray-300 mt-2 pt-2 border-t border-gray-100">
+            <span class="font-bold mt-0.5">🔒</span>
+            <span>Sessão Torturita — disponível no Fluência</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-300">
+            <span class="font-bold mt-0.5">🔒</span>
+            <span>Avatar 3D em tempo real — disponível no Fluência</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-300">
+            <span class="font-bold mt-0.5">🔒</span>
+            <span>Suporte individual 24h — disponível no Fluência</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-300">
+            <span class="font-bold mt-0.5">🔒</span>
+            <span>Grupo VIP exclusivo — disponível no Fluência</span>
+          </li>
         </ul>
 
-        <a href="#" class="block border-2 border-rosa text-rosa font-bold py-4 rounded-2xl hover:bg-pink-50 transition-colors">
-          Quero o Plano Básico →
+        <a href="#" class="block border border-gray-300 text-gray-500 text-sm font-semibold py-3.5 rounded-2xl hover:bg-gray-50 transition-colors">
+          Quero o Plano Básico
         </a>
       </div>
 
@@ -495,7 +559,12 @@
           🏆 MAIS COMPLETO
         </div>
 
-        <div class="inline-block bg-rosa/10 text-rosa text-xs font-bold px-3 py-1 rounded-full mb-4 self-center mt-2">Para quem quer falar de verdade</div>
+        <!-- AJUSTE 4: Prova social de escolha -->
+        <div class="inline-flex items-center gap-1.5 bg-green-50 border border-green-200 text-green-700 text-xs font-bold px-3 py-1.5 rounded-full mb-3 self-center mt-2">
+          <span class="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse"></span>
+          87% das alunas escolhem este plano
+        </div>
+        <div class="inline-block bg-rosa/10 text-rosa text-xs font-bold px-3 py-1 rounded-full mb-3 self-center">Para quem quer falar de verdade</div>
         <h3 class="text-2xl font-black text-gray-900 mb-1">Plano Fluência</h3>
         <div class="my-5">
           <div class="flex items-end justify-center gap-1">
@@ -726,6 +795,7 @@
     basico:   { mensal: { v:'69', obs:'por mês' }, trimestral: { v:'49', obs:'por mês · cobrado trimestralmente' }, anual: { v:'19', obs:'por mês · cobrado anualmente' } },
     fluencia: { mensal: { v:'99', obs:'por mês' }, trimestral: { v:'79', obs:'por mês · cobrado trimestralmente' }, anual: { v:'49', obs:'por mês · cobrado anualmente' } },
   };
+  const deltas = { mensal:'R$30', trimestral:'R$30', anual:'R$30' };
 
   const comparacao = [
     { criterio:'Disponibilidade', particular:'Horário fixo', pilarita:'24h, qualquer dia' },
@@ -753,9 +823,16 @@
     ['mensal','trimestral','anual'].forEach(b => {
       document.getElementById('btn-'+b).classList.toggle('active', b === p);
     });
-    const bec = document.getElementById('badge-economia');
-    bec.style.display = p === 'anual' ? 'inline-block' : 'none';
+    // Badge economia
+    document.getElementById('badge-economia').style.display = p === 'anual' ? 'inline-block' : 'none';
 
+    // Banner insight (ajuste 1) — só no anual
+    document.getElementById('banner-insight').style.display = p === 'anual' ? 'flex' : 'none';
+
+    // Delta valor (ajuste 2)
+    document.getElementById('delta-valor').textContent = deltas[p];
+
+    // Preços
     const pb = precos.basico[p];
     const pf = precos.fluencia[p];
     document.getElementById('preco-basico').textContent   = pb.v;
@@ -763,9 +840,8 @@
     document.getElementById('preco-fluencia').textContent = pf.v;
     document.getElementById('obs-fluencia').textContent   = pf.obs;
 
-    const bb = document.getElementById('badge-basico');
+    // Badge fluência
     const bf = document.getElementById('badge-fluencia');
-    bb.style.display = p === 'anual' ? 'inline-block' : 'none';
     bf.style.display = p === 'anual' ? 'inline-block' : 'none';
   }
 
