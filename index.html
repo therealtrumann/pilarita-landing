@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pilarita AI — Sua professora de espanhol 24h no celular</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            rosa: { DEFAULT: '#E91E8C', light: '#FDF2F8', dark: '#C01070' },
+          },
+          fontFamily: { inter: ['Inter', 'sans-serif'] },
+        }
+      }
+    }
+  </script>
+  <style>
+    * { font-family: 'Inter', sans-serif; }
+
+    /* GRADIENTE DE TEXTO */
+    .text-gradient {
+      background: linear-gradient(135deg, #E91E8C 0%, #9333EA 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* GRADIENTE DE FUNDO */
+    .bg-gradient-rosa {
+      background: linear-gradient(135deg, #E91E8C 0%, #9333EA 100%);
+    }
+
+    /* ANIMAÇÃO AVATAR */
+    @keyframes pulse-avatar {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(233,30,140,0.4); }
+      50% { transform: scale(1.03); box-shadow: 0 0 0 16px rgba(233,30,140,0); }
+    }
+    .avatar-pulse { animation: pulse-avatar 3s ease-in-out infinite; }
+
+    /* ANIMAÇÃO ENTRADA */
+    @keyframes fade-in-up {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in-up { opacity: 0; }
+    .fade-in-up.visible { animation: fade-in-up 0.6s ease forwards; }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #FDF2F8; }
+    ::-webkit-scrollbar-thumb { background: #E91E8C; border-radius: 3px; }
+
+    /* ACCORDION */
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-answer.open { max-height: 300px; }
+
+    /* TOGGLE PLANO */
+    .toggle-btn { transition: all 0.25s ease; }
+    .toggle-btn.active { background: linear-gradient(135deg, #E91E8C, #9333EA); color: white; }
+
+    /* CARD HOVER */
+    .card-hover { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .card-hover:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(233,30,140,0.15); }
+
+    /* SMOOTH SCROLL */
+    html { scroll-behavior: smooth; }
+
+    /* MOCKUP CHAT */
+    .chat-bubble-left {
+      background: white;
+      border-radius: 18px 18px 18px 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .chat-bubble-right {
+      background: linear-gradient(135deg, #E91E8C, #9333EA);
+      border-radius: 18px 18px 4px 18px;
+      color: white;
+    }
+
+    /* BARRA MOBILE */
+    #mobile-menu { transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0; overflow: hidden; }
+    #mobile-menu.open { max-height: 400px; opacity: 1; }
+  </style>
+</head>
+<body class="bg-white text-gray-800 antialiased">
+
+<!-- ================================================ -->
+<!-- NAVBAR -->
+<!-- ================================================ -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-pink-50 shadow-sm">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href="#" class="flex items-center gap-2">
+        <span class="text-2xl">🦙</span>
+        <span class="text-xl font-bold text-gradient">Pilarita</span>
+      </a>
+
+      <!-- Links desktop -->
+      <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+        <a href="#como-funciona" class="hover:text-rosa transition-colors">Como funciona</a>
+        <a href="#planos" class="hover:text-rosa transition-colors">Planos</a>
+        <a href="#depoimentos" class="hover:text-rosa transition-colors">Depoimentos</a>
+        <a href="#faq" class="hover:text-rosa transition-colors">FAQ</a>
+      </div>
+
+      <!-- CTA desktop -->
+      <a href="#planos" class="hidden md:inline-flex items-center gap-1 bg-gradient-rosa text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-md hover:opacity-90 transition-opacity">
+        Começar Agora →
+      </a>
+
+      <!-- Hamburger mobile -->
+      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMenu()">
+        <span class="w-5 h-0.5 bg-gray-700 rounded transition-all" id="h1"></span>
+        <span class="w-5 h-0.5 bg-gray-700 rounded transition-all" id="h2"></span>
+        <span class="w-5 h-0.5 bg-gray-700 rounded transition-all" id="h3"></span>
+      </button>
+    </div>
+
+    <!-- Menu mobile -->
+    <div id="mobile-menu" class="md:hidden pb-4">
+      <div class="flex flex-col gap-3 text-sm font-medium text-gray-700 pt-2">
+        <a href="#como-funciona" onclick="closeMenu()" class="py-2 border-b border-pink-50">Como funciona</a>
+        <a href="#planos" onclick="closeMenu()" class="py-2 border-b border-pink-50">Planos</a>
+        <a href="#depoimentos" onclick="closeMenu()" class="py-2 border-b border-pink-50">Depoimentos</a>
+        <a href="#faq" onclick="closeMenu()" class="py-2 border-b border-pink-50">FAQ</a>
+        <a href="#planos" onclick="closeMenu()" class="mt-2 text-center bg-gradient-rosa text-white font-semibold py-3 rounded-full">Começar Agora →</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ================================================ -->
+<!-- HERO -->
+<!-- ================================================ -->
+<section class="pt-24 pb-16 px-4 sm:px-6 bg-gradient-to-b from-pink-50/60 to-white text-center">
+  <div class="max-w-3xl mx-auto">
+
+    <!-- Badge social proof -->
+    <div class="fade-in-up inline-flex items-center gap-2 bg-white border border-pink-200 text-rosa text-sm font-semibold px-4 py-2 rounded-full shadow-sm mb-6">
+      ⭐ Mais de 2.000 alunas já destravaram o espanhol com a Pilarita
+    </div>
+
+    <!-- Headline -->
+    <h1 class="fade-in-up delay-1 text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-gray-900 mb-5">
+      Sua professora de espanhol particular —
+      <span class="text-gradient"> disponível 24 horas,</span>
+      no seu celular, por menos de R$1 por dia.
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="fade-in-up delay-2 text-lg sm:text-xl text-gray-500 leading-relaxed max-w-2xl mx-auto mb-8">
+      Pratique conversação real com uma IA que corrige sua pronúncia, adapta as aulas ao seu nível e te mantém evoluindo todo dia — sem precisar marcar horário com ninguém.
+    </p>
+
+    <!-- CTAs -->
+    <div class="fade-in-up delay-3 flex flex-col sm:flex-row gap-3 justify-center mb-12">
+      <a href="#planos" class="inline-flex items-center justify-center gap-2 bg-gradient-rosa text-white font-bold text-lg px-8 py-4 rounded-full shadow-lg hover:opacity-90 transition-opacity">
+        → Quero Destravar Meu Espanhol
+      </a>
+      <a href="#como-funciona" class="inline-flex items-center justify-center gap-2 border-2 border-rosa text-rosa font-semibold text-lg px-8 py-4 rounded-full hover:bg-pink-50 transition-colors">
+        Ver como funciona ↓
+      </a>
+    </div>
+
+    <!-- Mockup da plataforma -->
+    <div class="fade-in-up delay-4 relative max-w-sm mx-auto">
+      <div class="bg-white rounded-3xl shadow-2xl border border-pink-100 p-5 text-left">
+        <!-- Header mockup -->
+        <div class="flex items-center gap-3 pb-4 border-b border-gray-100 mb-4">
+          <div class="w-10 h-10 rounded-full bg-gradient-rosa flex items-center justify-center text-white text-lg">🦙</div>
+          <div>
+            <div class="font-bold text-gray-800 text-sm">Pilarita AI</div>
+            <div class="flex items-center gap-1 text-xs text-green-500 font-medium">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span> Online agora
+            </div>
+          </div>
+        </div>
+        <!-- Mensagens -->
+        <div class="space-y-3">
+          <div class="chat-bubble-left p-3 text-sm text-gray-700 max-w-xs">
+            ¡Hola! ¿Cómo estás hoy? Practiquemos juntas 😊
+          </div>
+          <div class="chat-bubble-right p-3 text-sm ml-auto max-w-xs">
+            Estoy bien, ¡gracias! Quiero practicar.
+          </div>
+          <div class="chat-bubble-left p-3 text-sm text-gray-700 max-w-xs">
+            ¡Perfecto! Tu pronunciación mejoró mucho esta semana. 🎉
+          </div>
+          <!-- Typing indicator -->
+          <div class="flex items-center gap-1 pl-1">
+            <div class="flex gap-1 bg-gray-100 px-3 py-2 rounded-full">
+              <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0s"></span>
+              <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.15s"></span>
+              <span class="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce" style="animation-delay:0.3s"></span>
+            </div>
+          </div>
+        </div>
+        <!-- Input mockup -->
+        <div class="mt-4 flex items-center gap-2 bg-gray-50 rounded-full px-4 py-2.5 border border-gray-200">
+          <span class="text-gray-400 text-sm flex-1">Escreva em espanhol...</span>
+          <div class="w-8 h-8 rounded-full bg-gradient-rosa flex items-center justify-center text-white text-xs">🎙</div>
+        </div>
+      </div>
+      <!-- Badge flutuante -->
+      <div class="absolute -top-3 -right-3 bg-white border border-pink-200 rounded-xl px-3 py-1.5 shadow-md text-xs font-bold text-rosa">
+        🏆 #23 no Ranking
+      </div>
+      <div class="absolute -bottom-3 -left-3 bg-white border border-pink-200 rounded-xl px-3 py-1.5 shadow-md text-xs font-bold text-gray-700">
+        🔥 7 dias de streak!
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- SOCIAL PROOF BAR -->
+<!-- ================================================ -->
+<section class="py-6 bg-pink-50 border-y border-pink-100">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+      <div class="fade-in-up flex flex-col items-center gap-1">
+        <span class="text-2xl">✅</span>
+        <span class="font-bold text-gray-800 text-sm">2.000+ alunas ativas</span>
+      </div>
+      <div class="fade-in-up delay-1 flex flex-col items-center gap-1">
+        <span class="text-2xl">⭐</span>
+        <span class="font-bold text-gray-800 text-sm">Avaliação 5 estrelas</span>
+      </div>
+      <div class="fade-in-up delay-2 flex flex-col items-center gap-1">
+        <span class="text-2xl">🎙️</span>
+        <span class="font-bold text-gray-800 text-sm">Método O.I.R. validado</span>
+      </div>
+      <div class="fade-in-up delay-3 flex flex-col items-center gap-1">
+        <span class="text-2xl">🏆</span>
+        <span class="font-bold text-gray-800 text-sm">Ranking gamificado</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- PROBLEMA -->
+<!-- ================================================ -->
+<section class="py-20 px-4 sm:px-6 text-center">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="fade-in-up text-3xl sm:text-4xl font-black text-gray-900 mb-4 leading-tight">
+      Você já tentou aprender espanhol antes.<br />
+      <span class="text-gradient">Mas na hora de falar... travou.</span>
+    </h2>
+
+    <div class="fade-in-up delay-1 grid grid-cols-1 sm:grid-cols-3 gap-4 mt-10 mb-10">
+      <div class="bg-red-50 border border-red-100 rounded-2xl p-5 card-hover text-center">
+        <div class="text-3xl mb-3">❌</div>
+        <p class="text-gray-700 text-sm font-medium leading-snug">Cursos que ensinam gramática, mas não te fazem <strong>falar</strong></p>
+      </div>
+      <div class="bg-red-50 border border-red-100 rounded-2xl p-5 card-hover text-center">
+        <div class="text-3xl mb-3">❌</div>
+        <p class="text-gray-700 text-sm font-medium leading-snug">Vídeos no YouTube que você assiste e <strong>esquece no dia seguinte</strong></p>
+      </div>
+      <div class="bg-red-50 border border-red-100 rounded-2xl p-5 card-hover text-center">
+        <div class="text-3xl mb-3">❌</div>
+        <p class="text-gray-700 text-sm font-medium leading-snug">Apps que parecem jogos, mas <strong>não preparam para conversa real</strong></p>
+      </div>
+    </div>
+
+    <div class="fade-in-up delay-2 bg-pink-50 rounded-3xl p-8 text-left sm:text-center border border-pink-100">
+      <p class="text-gray-700 text-lg leading-relaxed">
+        <strong class="text-gray-900">O problema não é você. É o método.</strong><br />
+        Aprender a falar uma língua exige uma coisa:<br />
+        praticar falando — todo dia, sem medo de errar.<br /><br />
+        <span class="text-rosa font-bold">A Pilarita foi criada exatamente pra isso.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- COMO FUNCIONA -->
+<!-- ================================================ -->
+<section id="como-funciona" class="py-20 px-4 sm:px-6 bg-pink-50/50 text-center">
+  <div class="max-w-4xl mx-auto">
+    <p class="fade-in-up text-rosa font-bold uppercase tracking-widest text-sm mb-3">Como funciona</p>
+    <h2 class="fade-in-up delay-1 text-3xl sm:text-4xl font-black text-gray-900 mb-12 leading-tight">
+      Simples como conversar com uma amiga —<br />
+      <span class="text-gradient">que também é professora.</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Passo 1 -->
+      <div class="fade-in-up bg-white rounded-3xl p-7 shadow-sm border border-pink-100 card-hover text-center">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-rosa flex items-center justify-center text-2xl mx-auto mb-5 shadow-md">🎙️</div>
+        <div class="inline-block bg-rosa/10 text-rosa text-xs font-bold px-3 py-1 rounded-full mb-3">Passo 1</div>
+        <h3 class="text-lg font-bold text-gray-900 mb-2">Converse</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Fale ou escreva em espanhol, a qualquer hora. A Pilarita responde como uma nativa, corrige com carinho e explica o que melhorar — em tempo real.</p>
+      </div>
+
+      <!-- Passo 2 -->
+      <div class="fade-in-up delay-1 bg-white rounded-3xl p-7 shadow-sm border border-pink-100 card-hover text-center">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-rosa flex items-center justify-center text-2xl mx-auto mb-5 shadow-md">🐢</div>
+        <div class="inline-block bg-rosa/10 text-rosa text-xs font-bold px-3 py-1 rounded-full mb-3">Passo 2</div>
+        <h3 class="text-lg font-bold text-gray-900 mb-2">Pratique com método</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Faça sua Sessão Torturita diária. Leia a frase, escute o áudio nativo e grave você repetindo. 45 frases por sessão. Sua pronúncia melhora sem você perceber.</p>
+      </div>
+
+      <!-- Passo 3 -->
+      <div class="fade-in-up delay-2 bg-white rounded-3xl p-7 shadow-sm border border-pink-100 card-hover text-center">
+        <div class="w-14 h-14 rounded-2xl bg-gradient-rosa flex items-center justify-center text-2xl mx-auto mb-5 shadow-md">📊</div>
+        <div class="inline-block bg-rosa/10 text-rosa text-xs font-bold px-3 py-1 rounded-full mb-3">Passo 3</div>
+        <h3 class="text-lg font-bold text-gray-900 mb-2">Evolua e veja o progresso</h3>
+        <p class="text-gray-500 text-sm leading-relaxed">Acompanhe seu streak, suba no ranking e desbloqueie conquistas. Quanto mais você pratica, mais fluente você fica — e mais motivada você fica para continuar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- NOVA FUNCIONALIDADE — AVATAR 3D -->
+<!-- ================================================ -->
+<section class="py-20 px-4 sm:px-6 bg-gradient-rosa text-white text-center overflow-hidden relative">
+  <!-- Decoração -->
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-10 left-10 w-40 h-40 rounded-full bg-white"></div>
+    <div class="absolute bottom-10 right-10 w-60 h-60 rounded-full bg-white"></div>
+  </div>
+
+  <div class="max-w-4xl mx-auto relative z-10">
+    <div class="fade-in-up inline-flex items-center gap-2 bg-white/20 border border-white/30 text-white text-sm font-bold px-4 py-2 rounded-full mb-6">
+      🆕 NOVO — Exclusivo no Plano Fluência
+    </div>
+
+    <h2 class="fade-in-up delay-1 text-3xl sm:text-5xl font-black mb-5 leading-tight">
+      Agora você pode conversar<br />cara a cara com a Pilarita —<br />em tempo real.
+    </h2>
+
+    <p class="fade-in-up delay-2 text-white/85 text-lg leading-relaxed max-w-2xl mx-auto mb-12">
+      Uma avatar animada em 3D que ouve você, responde, corrige sua pronúncia e simula conversas reais como se você estivesse na frente de uma professora nativa. Sem pressa, sem julgamento. A conversa mais natural que você já teve em espanhol.
+    </p>
+
+    <!-- Mockup videochamada -->
+    <div class="fade-in-up delay-3 max-w-xs mx-auto">
+      <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-3xl p-6 relative">
+        <!-- Avatar animado -->
+        <div class="avatar-pulse w-28 h-28 mx-auto rounded-full bg-white/20 border-4 border-white flex items-center justify-center mb-4 text-5xl shadow-2xl">
+          🦙
+        </div>
+        <!-- Nome -->
+        <div class="text-white font-bold mb-1">Pilarita</div>
+        <div class="flex items-center justify-center gap-1 text-xs text-white/70 mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-300 animate-pulse inline-block"></span>
+          Ao vivo — ouvindo você...
+        </div>
+        <!-- Legenda -->
+        <div class="bg-white/20 rounded-2xl px-4 py-2.5 text-white text-sm font-medium mb-4">
+          "¿Cómo te llamas? ¿De dónde eres?"
+        </div>
+        <!-- Controles -->
+        <div class="flex items-center justify-center gap-4">
+          <button class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg">🔇</button>
+          <button class="w-14 h-14 rounded-full bg-red-500 flex items-center justify-center text-xl shadow-lg">🎙️</button>
+          <button class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center text-lg">📹</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- BENEFÍCIOS — BENTO GRID -->
+<!-- ================================================ -->
+<section class="py-20 px-4 sm:px-6 text-center">
+  <div class="max-w-4xl mx-auto">
+    <p class="fade-in-up text-rosa font-bold uppercase tracking-widest text-sm mb-3">Funcionalidades</p>
+    <h2 class="fade-in-up delay-1 text-3xl sm:text-4xl font-black text-gray-900 mb-12 leading-tight">
+      Tudo que você precisa para sair do<br />
+      <span class="text-gradient">travado para o fluente.</span>
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="fade-in-up bg-pink-50 border border-pink-100 rounded-3xl p-6 card-hover text-center">
+        <div class="text-4xl mb-3">🎙️</div>
+        <h3 class="font-bold text-gray-900 mb-1">Chat de voz e texto</h3>
+        <p class="text-gray-500 text-sm">Pratique como preferir — fala ou escrita, a qualquer hora do dia.</p>
+      </div>
+
+      <div class="fade-in-up delay-1 bg-pink-50 border border-pink-100 rounded-3xl p-6 card-hover text-center">
+        <div class="text-4xl mb-3">📊</div>
+        <h3 class="font-bold text-gray-900 mb-1">Acompanhamento de progresso</h3>
+        <p class="text-gray-500 text-sm">Veja sua evolução dia a dia, semana a semana com gráficos reais.</p>
+      </div>
+
+      <div class="fade-in-up delay-2 bg-pink-50 border border-pink-100 rounded-3xl p-6 card-hover text-center">
+        <div class="text-4xl mb-3">🏆</div>
+        <h3 class="font-bold text-gray-900 mb-1">Ranking gamificado</h3>
+        <p class="text-gray-500 text-sm">Compita com outras alunas e se mantenha motivada todo dia.</p>
+      </div>
+
+      <div class="fade-in-up delay-1 bg-pink-50 border border-pink-100 rounded-3xl p-6 card-hover text-center">
+        <div class="text-4xl mb-3">🐢</div>
+        <h3 class="font-bold text-gray-900 mb-1">Sessão Torturita</h3>
+        <p class="text-gray-500 text-sm">Método O.I.R.: Ouvir, Imitar, Repetir. A forma mais rápida de melhorar a fala.</p>
+      </div>
+
+      <div class="fade-in-up delay-2 bg-pink-50 border border-pink-100 rounded-3xl p-6 card-hover text-center">
+        <div class="text-4xl mb-3">🤖</div>
+        <h3 class="font-bold text-gray-900 mb-1">IA que se adapta a você</h3>
+        <p class="text-gray-500 text-sm">Iniciante ou intermediária, a Pilarita ajusta automaticamente o nível.</p>
+      </div>
+
+      <div class="fade-in-up delay-3 bg-gradient-rosa rounded-3xl p-6 card-hover text-center relative overflow-hidden">
+        <div class="absolute top-3 right-3 bg-white text-rosa text-xs font-black px-2 py-0.5 rounded-full">NOVO</div>
+        <div class="text-4xl mb-3">💬</div>
+        <h3 class="font-bold text-white mb-1">Conversa em tempo real</h3>
+        <p class="text-white/80 text-sm">Avatar 3D que responde, corrige e conversa como uma nativa. Ao vivo. 24h.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- PREÇOS -->
+<!-- ================================================ -->
+<section id="planos" class="py-20 px-4 sm:px-6 bg-pink-50/50 text-center">
+  <div class="max-w-4xl mx-auto">
+    <p class="fade-in-up text-rosa font-bold uppercase tracking-widest text-sm mb-3">Planos</p>
+    <h2 class="fade-in-up delay-1 text-3xl sm:text-4xl font-black text-gray-900 mb-3 leading-tight">
+      Escolha o plano certo para o seu ritmo.
+    </h2>
+    <p class="fade-in-up delay-2 text-gray-500 mb-10">Cancele quando quiser. Sem burocracia.</p>
+
+    <!-- Toggle -->
+    <div class="fade-in-up delay-2 inline-flex items-center bg-white border border-pink-200 rounded-full p-1 shadow-sm mb-10 gap-1">
+      <button onclick="setPlano('mensal')" id="btn-mensal" class="toggle-btn text-sm font-semibold px-5 py-2 rounded-full text-gray-500">Mensal</button>
+      <button onclick="setPlano('trimestral')" id="btn-trimestral" class="toggle-btn text-sm font-semibold px-5 py-2 rounded-full text-gray-500">Trimestral</button>
+      <button onclick="setPlano('anual')" id="btn-anual" class="toggle-btn active text-sm font-semibold px-5 py-2 rounded-full">Anual ⭐</button>
+    </div>
+
+    <!-- Badge economia (anual) -->
+    <div id="badge-economia" class="fade-in-up delay-3 inline-block bg-green-100 text-green-700 text-sm font-bold px-4 py-1.5 rounded-full mb-8 border border-green-200">
+      💰 Economia de até 72% no plano anual
+    </div>
+
+    <!-- Cards de preço -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+
+      <!-- PLANO BÁSICO -->
+      <div class="fade-in-up bg-white rounded-3xl p-8 shadow-md border border-pink-100 card-hover text-center flex flex-col">
+        <div class="inline-block bg-gray-100 text-gray-600 text-xs font-bold px-3 py-1 rounded-full mb-4 self-center">Para quem quer começar</div>
+        <h3 class="text-2xl font-black text-gray-900 mb-1">Plano Básico</h3>
+        <div class="my-5">
+          <div class="flex items-end justify-center gap-1">
+            <span class="text-gray-400 text-lg">R$</span>
+            <span class="text-6xl font-black text-gray-900" id="preco-basico">19</span>
+            <span class="text-gray-400 text-base mb-2">/mês</span>
+          </div>
+          <p class="text-gray-400 text-sm" id="obs-basico">cobrado anualmente</p>
+          <div id="badge-basico" class="inline-block mt-2 bg-rosa/10 text-rosa text-xs font-bold px-3 py-1 rounded-full">Mais popular ⭐</div>
+        </div>
+
+        <ul class="text-left space-y-3 mb-8 flex-1">
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Chat de texto e áudio com a Pilarita IA</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Ranking de alunas e acompanhamento</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Suporte em grupo</span>
+          </li>
+        </ul>
+
+        <a href="#" class="block border-2 border-rosa text-rosa font-bold py-4 rounded-2xl hover:bg-pink-50 transition-colors">
+          Quero o Plano Básico →
+        </a>
+      </div>
+
+      <!-- PLANO FLUÊNCIA -->
+      <div class="fade-in-up delay-1 bg-white rounded-3xl p-8 shadow-2xl border-2 border-rosa card-hover text-center flex flex-col relative scale-100 md:scale-105">
+        <!-- Badge topo -->
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-rosa text-white text-xs font-black px-5 py-1.5 rounded-full shadow-md whitespace-nowrap">
+          🏆 MAIS COMPLETO
+        </div>
+
+        <div class="inline-block bg-rosa/10 text-rosa text-xs font-bold px-3 py-1 rounded-full mb-4 self-center mt-2">Para quem quer falar de verdade</div>
+        <h3 class="text-2xl font-black text-gray-900 mb-1">Plano Fluência</h3>
+        <div class="my-5">
+          <div class="flex items-end justify-center gap-1">
+            <span class="text-rosa text-lg">R$</span>
+            <span class="text-6xl font-black text-gradient" id="preco-fluencia">49</span>
+            <span class="text-gray-400 text-base mb-2">/mês</span>
+          </div>
+          <p class="text-gray-400 text-sm" id="obs-fluencia">cobrado anualmente</p>
+          <div id="badge-fluencia" class="inline-block mt-2 bg-gradient-rosa text-white text-xs font-bold px-3 py-1 rounded-full">Melhor custo-benefício 🏆</div>
+        </div>
+
+        <ul class="text-left space-y-3 mb-8 flex-1">
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Chat de texto e áudio com a Pilarita IA</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Ranking de alunas e acompanhamento</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Sessão Torturita — método O.I.R. diário</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Progresso personalizado com relatórios</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="font-bold mt-0.5">🆕</span>
+            <span class="font-semibold text-rosa">Conversa em tempo real com avatar 3D</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Cupom 10% de desconto em outros programas</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Grupo VIP exclusivo</span>
+          </li>
+          <li class="flex items-start gap-3 text-sm text-gray-700">
+            <span class="text-green-500 font-bold mt-0.5">✅</span>
+            <span>Suporte individual prioritário 24h</span>
+          </li>
+        </ul>
+
+        <a href="#" class="block bg-gradient-rosa text-white font-bold py-4 rounded-2xl shadow-lg hover:opacity-90 transition-opacity text-lg">
+          Quero Falar Espanhol de Verdade →
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Garantia -->
+    <div class="fade-in-up delay-3 mt-8 flex items-center justify-center gap-2 text-gray-500 text-sm">
+      <span class="text-xl">🔒</span>
+      <span><strong class="text-gray-700">Garantia de 7 dias</strong> — Se não gostar, devolvemos 100%. Sem perguntas.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- COMPARAÇÃO -->
+<!-- ================================================ -->
+<section class="py-20 px-4 sm:px-6 text-center">
+  <div class="max-w-3xl mx-auto">
+    <h2 class="fade-in-up text-3xl sm:text-4xl font-black text-gray-900 mb-12 leading-tight">
+      Por que a Pilarita e não<br /><span class="text-gradient">uma professora particular?</span>
+    </h2>
+
+    <div class="fade-in-up delay-1 rounded-3xl overflow-hidden border border-pink-100 shadow-md">
+      <!-- Header -->
+      <div class="grid grid-cols-3 bg-gray-50 border-b border-gray-100 text-sm font-bold text-gray-500 uppercase tracking-wide">
+        <div class="py-4 px-4 text-left">Critério</div>
+        <div class="py-4 px-4">Professora Particular</div>
+        <div class="py-4 px-4 bg-rosa/5 text-rosa">Pilarita Fluência</div>
+      </div>
+      <!-- Linhas -->
+      <div id="tabela-comp"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- DEPOIMENTOS -->
+<!-- ================================================ -->
+<section id="depoimentos" class="py-20 px-4 sm:px-6 bg-pink-50/50 text-center">
+  <div class="max-w-4xl mx-auto">
+    <p class="fade-in-up text-rosa font-bold uppercase tracking-widest text-sm mb-3">Depoimentos</p>
+    <h2 class="fade-in-up delay-1 text-3xl sm:text-4xl font-black text-gray-900 mb-12 leading-tight">
+      Elas travavam. Agora falam.<br />
+      <span class="text-gradient">Veja o que dizem.</span>
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <!-- Depoimento 1 -->
+      <div class="fade-in-up bg-white rounded-3xl p-6 shadow-sm border border-pink-100 card-hover text-left">
+        <div class="flex mb-3">
+          <span class="text-rosa text-sm">⭐⭐⭐⭐⭐</span>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-5">
+          "Finalmente comecei a me expressar sem medo. Depois de 3 semanas com a Pilarita, <strong>consegui me apresentar numa reunião inteira em espanhol.</strong>"
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-rosa flex items-center justify-center text-white font-bold">M</div>
+          <div>
+            <div class="font-bold text-gray-900 text-sm">Mariana C.</div>
+            <div class="text-gray-400 text-xs">Porto Alegre, RS</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depoimento 2 -->
+      <div class="fade-in-up delay-1 bg-white rounded-3xl p-6 shadow-sm border border-pink-100 card-hover text-left">
+        <div class="flex mb-3">
+          <span class="text-rosa text-sm">⭐⭐⭐⭐⭐</span>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-5">
+          "Tentei vários apps antes e nenhum me fez praticar fala de verdade. <strong>A Sessão Torturita mudou tudo pra mim.</strong> Minha pronúncia melhorou em 2 semanas."
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center text-white font-bold">C</div>
+          <div>
+            <div class="font-bold text-gray-900 text-sm">Carlos S.</div>
+            <div class="text-gray-400 text-xs">São Paulo, SP</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Depoimento 3 -->
+      <div class="fade-in-up delay-2 bg-white rounded-3xl p-6 shadow-sm border border-pink-100 card-hover text-left">
+        <div class="flex mb-3">
+          <span class="text-rosa text-sm">⭐⭐⭐⭐⭐</span>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-5">
+          "Estou muito mais confiante para viagens e conversas. <strong>O ranking me mantém motivada todo dia</strong> — parece um jogo mas o resultado é real!"
+        </p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-pink-400 flex items-center justify-center text-white font-bold">A</div>
+          <div>
+            <div class="font-bold text-gray-900 text-sm">Ana Paula L.</div>
+            <div class="text-gray-400 text-xs">Curitiba, PR</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- FAQ -->
+<!-- ================================================ -->
+<section id="faq" class="py-20 px-4 sm:px-6 text-center">
+  <div class="max-w-2xl mx-auto">
+    <p class="fade-in-up text-rosa font-bold uppercase tracking-widest text-sm mb-3">Dúvidas</p>
+    <h2 class="fade-in-up delay-1 text-3xl sm:text-4xl font-black text-gray-900 mb-12 leading-tight">
+      Perguntas frequentes
+    </h2>
+
+    <div id="faq-list" class="space-y-3 text-left"></div>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- CTA FINAL -->
+<!-- ================================================ -->
+<section class="py-24 px-4 sm:px-6 bg-gradient-rosa text-white text-center relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10">
+    <div class="absolute top-0 left-0 w-64 h-64 rounded-full bg-white -translate-x-32 -translate-y-32"></div>
+    <div class="absolute bottom-0 right-0 w-80 h-80 rounded-full bg-white translate-x-40 translate-y-40"></div>
+  </div>
+  <div class="max-w-3xl mx-auto relative z-10">
+    <h2 class="fade-in-up text-4xl sm:text-5xl font-black mb-5 leading-tight">
+      Você pode continuar travando.<br />
+      <span class="text-white/80">Ou pode começar a falar hoje.</span>
+    </h2>
+    <p class="fade-in-up delay-1 text-white/80 text-lg leading-relaxed max-w-xl mx-auto mb-10">
+      Cada dia sem praticar é mais um dia longe da fluência. A Pilarita está esperando por você — agora, às 23h, no ônibus, onde você estiver. 7 dias de garantia. Sem risco. Com resultado.
+    </p>
+    <div class="fade-in-up delay-2 flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="#planos" class="inline-flex items-center justify-center gap-2 bg-white text-rosa font-bold text-lg px-8 py-4 rounded-full shadow-xl hover:opacity-90 transition-opacity">
+        → Quero o Plano Fluência — 12x de R$49
+      </a>
+      <a href="#planos" class="inline-flex items-center justify-center gap-2 border-2 border-white/60 text-white font-semibold text-lg px-8 py-4 rounded-full hover:bg-white/10 transition-colors">
+        Quero o Plano Básico — 12x de R$19
+      </a>
+    </div>
+    <p class="fade-in-up delay-3 mt-6 text-white/60 text-sm">🔒 Garantia de 7 dias. Cancele quando quiser.</p>
+  </div>
+</section>
+
+<!-- ================================================ -->
+<!-- FOOTER -->
+<!-- ================================================ -->
+<footer class="py-10 px-4 sm:px-6 bg-gray-900 text-center">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex items-center justify-center gap-2 mb-3">
+      <span class="text-2xl">🦙</span>
+      <span class="text-xl font-bold text-white">Pilarita</span>
+    </div>
+    <p class="text-gray-400 text-sm mb-5">Pratique espanhol de forma leve e divertida.</p>
+    <div class="flex items-center justify-center gap-6 text-gray-500 text-sm mb-6">
+      <a href="#" class="hover:text-white transition-colors">Termos de Uso</a>
+      <a href="#" class="hover:text-white transition-colors">Política de Privacidade</a>
+      <a href="#" class="hover:text-white transition-colors">📱 WhatsApp</a>
+    </div>
+    <!-- Ícones sociais -->
+    <div class="flex items-center justify-center gap-4 mb-6">
+      <!-- Instagram -->
+      <a href="#" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-rosa transition-colors">
+        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+      </a>
+      <!-- YouTube -->
+      <a href="#" class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center hover:bg-rosa transition-colors">
+        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
+    </div>
+    <p class="text-gray-600 text-xs">© 2025 Pilarita — Todos os direitos reservados.</p>
+  </div>
+</footer>
+
+<!-- ================================================ -->
+<!-- JAVASCRIPT -->
+<!-- ================================================ -->
+<script>
+  /* ── DADOS ── */
+  const precos = {
+    basico:   { mensal: { v:'69', obs:'por mês' }, trimestral: { v:'49', obs:'por mês · cobrado trimestralmente' }, anual: { v:'19', obs:'por mês · cobrado anualmente' } },
+    fluencia: { mensal: { v:'99', obs:'por mês' }, trimestral: { v:'79', obs:'por mês · cobrado trimestralmente' }, anual: { v:'49', obs:'por mês · cobrado anualmente' } },
+  };
+
+  const comparacao = [
+    { criterio:'Disponibilidade', particular:'Horário fixo', pilarita:'24h, qualquer dia' },
+    { criterio:'Preço',           particular:'R$80–150/hora', pilarita:'A partir de R$49/mês' },
+    { criterio:'Julgamento',      particular:'Às vezes',     pilarita:'Zero' },
+    { criterio:'Pratica fala',    particular:'Depende',       pilarita:'Diariamente' },
+    { criterio:'Progresso visível',particular:'Raramente',   pilarita:'Todo dia' },
+    { criterio:'Avatar 3D ao vivo',particular:'Não',         pilarita:'✅ Exclusivo' },
+  ];
+
+  const faqs = [
+    { q:'Preciso saber espanhol para começar?',         a:'Não. A Pilarita começa do zero e adapta o nível a você automaticamente.' },
+    { q:'Funciona no celular e no computador?',          a:'Sim, a plataforma roda em qualquer dispositivo com navegador. Sem necessidade de instalar app.' },
+    { q:'O que é a Sessão Torturita?',                   a:'Uma prática diária onde você lê, escuta e repete frases em espanhol. 45 frases por sessão. É o método mais eficaz para melhorar a pronúncia. Disponível no Plano Fluência.' },
+    { q:'E se eu quiser cancelar?',                      a:'Cancela quando quiser, direto na plataforma. Sem complicação, sem multa.' },
+    { q:'A conversa com o avatar 3D é ao vivo?',         a:'Sim. Você fala, ela escuta e responde em tempo real — disponível 24h, exclusivo no Plano Fluência.' },
+    { q:'Posso trocar de plano depois?',                  a:'Sim, a qualquer momento. Upgrades e downgrades são imediatos.' },
+  ];
+
+  /* ── TOGGLE DE PLANO ── */
+  let planoAtual = 'anual';
+
+  function setPlano(p) {
+    planoAtual = p;
+    ['mensal','trimestral','anual'].forEach(b => {
+      document.getElementById('btn-'+b).classList.toggle('active', b === p);
+    });
+    const bec = document.getElementById('badge-economia');
+    bec.style.display = p === 'anual' ? 'inline-block' : 'none';
+
+    const pb = precos.basico[p];
+    const pf = precos.fluencia[p];
+    document.getElementById('preco-basico').textContent   = pb.v;
+    document.getElementById('obs-basico').textContent     = pb.obs;
+    document.getElementById('preco-fluencia').textContent = pf.v;
+    document.getElementById('obs-fluencia').textContent   = pf.obs;
+
+    const bb = document.getElementById('badge-basico');
+    const bf = document.getElementById('badge-fluencia');
+    bb.style.display = p === 'anual' ? 'inline-block' : 'none';
+    bf.style.display = p === 'anual' ? 'inline-block' : 'none';
+  }
+
+  /* ── TABELA COMPARAÇÃO ── */
+  const tbody = document.getElementById('tabela-comp');
+  comparacao.forEach((row, i) => {
+    const bg = i % 2 === 0 ? 'bg-white' : 'bg-gray-50/50';
+    tbody.innerHTML += `
+      <div class="grid grid-cols-3 border-b border-gray-100 text-sm ${bg}">
+        <div class="py-4 px-4 text-left font-medium text-gray-700">${row.criterio}</div>
+        <div class="py-4 px-4 text-gray-400 text-center">${row.particular}</div>
+        <div class="py-4 px-4 text-rosa font-semibold text-center bg-rosa/5">${row.pilarita}</div>
+      </div>`;
+  });
+
+  /* ── FAQ ACCORDION ── */
+  const faqList = document.getElementById('faq-list');
+  faqs.forEach((item, i) => {
+    faqList.innerHTML += `
+      <div class="bg-white border border-pink-100 rounded-2xl overflow-hidden shadow-sm">
+        <button onclick="toggleFaq(${i})" class="w-full flex items-center justify-between px-6 py-4 text-left font-semibold text-gray-900 hover:bg-pink-50 transition-colors gap-4">
+          <span>${item.q}</span>
+          <span id="faq-icon-${i}" class="text-rosa text-xl flex-shrink-0 transition-transform duration-300">+</span>
+        </button>
+        <div id="faq-answer-${i}" class="faq-answer px-6 text-gray-500 text-sm leading-relaxed">
+          <div class="pb-4">${item.a}</div>
+        </div>
+      </div>`;
+  });
+
+  function toggleFaq(i) {
+    const ans  = document.getElementById('faq-answer-'+i);
+    const icon = document.getElementById('faq-icon-'+i);
+    const open = ans.classList.toggle('open');
+    icon.textContent = open ? '−' : '+';
+    icon.style.transform = open ? 'rotate(0deg)' : '';
+  }
+
+  /* ── HAMBURGER MENU ── */
+  let menuOpen = false;
+  function toggleMenu() {
+    menuOpen = !menuOpen;
+    document.getElementById('mobile-menu').classList.toggle('open', menuOpen);
+    document.getElementById('h1').style.transform = menuOpen ? 'rotate(45deg) translate(4px, 4px)' : '';
+    document.getElementById('h2').style.opacity  = menuOpen ? '0' : '1';
+    document.getElementById('h3').style.transform = menuOpen ? 'rotate(-45deg) translate(4px, -4px)' : '';
+  }
+  function closeMenu() {
+    menuOpen = false;
+    document.getElementById('mobile-menu').classList.remove('open');
+    document.getElementById('h1').style.transform = '';
+    document.getElementById('h2').style.opacity  = '1';
+    document.getElementById('h3').style.transform = '';
+  }
+
+  /* ── SCROLL REVEAL ── */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+
+  /* ── INICIALIZAR ── */
+  setPlano('anual');
+</script>
+
+</body>
+</html>
