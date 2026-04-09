@@ -459,7 +459,6 @@
     <!-- Toggle -->
     <div class="fade-in-up delay-2 inline-flex items-center bg-white border border-pink-200 rounded-full p-1 shadow-sm mb-4 gap-1">
       <button onclick="setPlano('mensal')" id="btn-mensal" class="toggle-btn text-sm font-semibold px-5 py-2 rounded-full text-gray-500">Mensal</button>
-      <button onclick="setPlano('semestral')" id="btn-semestral" class="toggle-btn text-sm font-semibold px-5 py-2 rounded-full text-gray-500">Semestral</button>
       <button onclick="setPlano('anual')" id="btn-anual" class="toggle-btn active text-sm font-semibold px-5 py-2 rounded-full">Anual ⭐</button>
     </div>
 
@@ -600,7 +599,7 @@
 <section class="py-20 px-4 sm:px-6 text-center">
   <div class="max-w-3xl mx-auto">
     <h2 class="fade-in-up text-3xl sm:text-4xl font-black text-gray-900 mb-12 leading-tight">
-      Por que a Pilarita e não<br /><span class="text-gradient">uma professora particular?</span>
+      Por que a Pilarita não é SÓ<br /><span class="text-gradient">uma professora?</span>
     </h2>
 
     <div class="fade-in-up delay-1 rounded-3xl overflow-hidden border border-pink-100 shadow-md">
@@ -732,7 +731,7 @@
         → Quero o Plano Fluência — 12x de R$49
       </a>
       <a href="https://pay.hotmart.com/W99956304V?off=hg6c2uuq" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2 border-2 border-white/60 text-white font-semibold text-lg px-8 py-4 rounded-full hover:bg-white/10 transition-colors">
-        Quero o Plano Básico — 12x de R$59
+        Quero o Plano Básico — 12x de R$39
       </a>
     </div>
     <p class="fade-in-up delay-3 mt-6 text-white/60 text-sm">🔒 Garantia de 7 dias. Cancele quando quiser.</p>
@@ -748,7 +747,7 @@
     basico: {
       mensal:    { v:'89', pre:'R$',    suf:'/mês', obs:'cobrado mensalmente',    link:'https://pay.hotmart.com/W99956304V?off=u619j5ev' },
       semestral: { v:'69', pre:'6x R$', suf:'/mês', obs:'cobrado semestralmente', link:'https://pay.hotmart.com/W99956304V?off=ta9d3qsk' },
-      anual:     { v:'59', pre:'12x R$',suf:'/mês', obs:'cobrado anualmente',     link:'https://pay.hotmart.com/W99956304V?off=hg6c2uuq' },
+      anual:     { v:'39', pre:'12x R$',suf:'/mês', obs:'cobrado anualmente',     link:'https://pay.hotmart.com/W99956304V?off=hg6c2uuq' },
     },
     fluencia: {
       mensal:    { v:'99', pre:'R$',    suf:'/mês', obs:'cobrado mensalmente',    link:'https://pay.hotmart.com/W99956304V?off=yt5elwhx' },
@@ -781,7 +780,7 @@
 
   function setPlano(p) {
     planoAtual = p;
-    ['mensal','semestral','anual'].forEach(b => {
+    ['mensal','anual'].forEach(b => {
       document.getElementById('btn-'+b).classList.toggle('active', b === p);
     });
 
