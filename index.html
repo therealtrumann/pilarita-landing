@@ -105,63 +105,66 @@
       color: white;
     }
 
-    /* BARRA MOBILE */
-    #mobile-menu { transition: max-height 0.3s ease, opacity 0.3s ease; max-height: 0; opacity: 0; overflow: hidden; }
-    #mobile-menu.open { max-height: 400px; opacity: 1; }
+    /* TICKER */
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .ticker-track { display: inline-block; animation: marquee 24s linear infinite; white-space: nowrap; }
+    .ticker-track:hover { animation-play-state: paused; }
+
+    /* WAVEFORM */
+    @keyframes wave { 0%,100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+    .wave-bar { display: inline-block; width: 3px; height: 14px; border-radius: 2px; background: rgba(255,255,255,0.75); transform-origin: bottom; animation: wave 0.9s ease-in-out infinite; margin: 0 1.5px; }
+    .wave-bar:nth-child(1) { animation-delay: 0s;    height: 8px;  }
+    .wave-bar:nth-child(2) { animation-delay: 0.18s; height: 14px; }
+    .wave-bar:nth-child(3) { animation-delay: 0.36s; height: 10px; }
+    .wave-bar:nth-child(4) { animation-delay: 0.18s; height: 14px; }
+    .wave-bar:nth-child(5) { animation-delay: 0s;    height: 8px;  }
+
+    /* STREAK */
+    @keyframes fire-pulse { 0%,100% { transform: scale(1) rotate(-5deg); } 50% { transform: scale(1.4) rotate(5deg); } }
+    .streak-fire { display: inline-block; animation: fire-pulse 1.3s ease-in-out infinite; }
+
+    /* TOAST */
+    @keyframes toast-in  { from { transform: translateX(-110%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    @keyframes toast-out { from { transform: translateX(0); opacity: 1; } to { transform: translateX(-110%); opacity: 0; } }
+    .toast-enter { animation: toast-in  0.45s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+    .toast-exit  { animation: toast-out 0.35s ease forwards; }
   </style>
 </head>
 <body class="bg-white text-gray-800 antialiased overflow-x-hidden">
 
 <!-- ================================================ -->
-<!-- NAVBAR -->
+<!-- BARRA SOCIAL PROOF FIXA (substitui navbar) -->
 <!-- ================================================ -->
-<nav class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-pink-50 shadow-sm">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6">
-    <div class="flex items-center justify-between h-16">
-      <!-- Logo -->
-      <a href="#" class="flex items-center gap-2">
-        <span class="text-2xl">🦙</span>
-        <span class="text-xl font-bold text-gradient">Pilarita</span>
-      </a>
-
-      <!-- Links desktop -->
-      <div class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
-        <a href="#como-funciona" class="hover:text-rosa transition-colors">Como funciona</a>
-        <a href="#plano-fluencia" class="hover:text-rosa transition-colors">Planos</a>
-        <a href="#depoimentos" class="hover:text-rosa transition-colors">Depoimentos</a>
-        <a href="#faq" class="hover:text-rosa transition-colors">FAQ</a>
-      </div>
-
-      <!-- CTA desktop -->
-      <a href="#plano-fluencia" class="hidden md:inline-flex items-center gap-1 bg-gradient-rosa text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-md hover:opacity-90 transition-opacity">
-        Começar Agora →
-      </a>
-
-      <!-- Hamburger mobile -->
-      <button id="hamburger" class="md:hidden flex flex-col gap-1.5 p-2" onclick="toggleMenu()">
-        <span class="w-5 h-0.5 bg-gray-700 rounded transition-all" id="h1"></span>
-        <span class="w-5 h-0.5 bg-gray-700 rounded transition-all" id="h2"></span>
-        <span class="w-5 h-0.5 bg-gray-700 rounded transition-all" id="h3"></span>
-      </button>
-    </div>
-
-    <!-- Menu mobile -->
-    <div id="mobile-menu" class="md:hidden pb-4">
-      <div class="flex flex-col gap-3 text-sm font-medium text-gray-700 pt-2">
-        <a href="#como-funciona" onclick="closeMenu()" class="py-2 border-b border-pink-50">Como funciona</a>
-        <a href="#plano-fluencia" onclick="closeMenu()" class="py-2 border-b border-pink-50">Planos</a>
-        <a href="#depoimentos" onclick="closeMenu()" class="py-2 border-b border-pink-50">Depoimentos</a>
-        <a href="#faq" onclick="closeMenu()" class="py-2 border-b border-pink-50">FAQ</a>
-        <a href="#plano-fluencia" onclick="closeMenu()" class="mt-2 text-center bg-gradient-rosa text-white font-semibold py-3 rounded-full">Começar Agora →</a>
-      </div>
+<div class="fixed top-0 left-0 right-0 z-50 bg-white border-b border-pink-100 shadow-sm" style="height:40px;overflow:hidden;">
+  <!-- Desktop: 4 stats lado a lado -->
+  <div class="hidden sm:flex items-center justify-center h-full gap-5 px-6 text-xs font-semibold text-gray-600">
+    <span class="flex items-center gap-1.5">⭐ <span class="text-gray-800">Avaliação 5 estrelas</span></span>
+    <span class="text-pink-200">·</span>
+    <span class="flex items-center gap-1.5">✅ <span class="text-gray-800"><span id="counter-alunas">0</span>+ alunas ativas</span></span>
+    <span class="text-pink-200">·</span>
+    <span class="flex items-center gap-1.5">🎙️ <span class="text-gray-800">Método O.I.R. validado</span></span>
+    <span class="text-pink-200">·</span>
+    <span class="flex items-center gap-1.5">🏆 <span class="text-gray-800"><span id="counter-fluentes">0</span>+ levadas à fluência</span></span>
+  </div>
+  <!-- Mobile: ticker contínuo -->
+  <div class="sm:hidden h-full flex items-center overflow-hidden">
+    <div class="ticker-track text-xs font-semibold text-gray-600">
+      <span class="px-5">⭐ Avaliação 5 estrelas</span>
+      <span class="px-5">✅ 2.000+ alunas ativas</span>
+      <span class="px-5">🎙️ Método O.I.R. validado</span>
+      <span class="px-5">🏆 3.000+ levadas à fluência</span>
+      <span class="px-5">⭐ Avaliação 5 estrelas</span>
+      <span class="px-5">✅ 2.000+ alunas ativas</span>
+      <span class="px-5">🎙️ Método O.I.R. validado</span>
+      <span class="px-5">🏆 3.000+ levadas à fluência</span>
     </div>
   </div>
-</nav>
+</div>
 
 <!-- ================================================ -->
 <!-- HERO -->
 <!-- ================================================ -->
-<section class="pt-20 pb-10 md:pt-24 md:pb-16 px-4 sm:px-6 bg-gradient-to-b from-pink-50/60 to-white text-center">
+<section class="pt-14 pb-10 md:pt-16 md:pb-14 px-4 sm:px-6 bg-gradient-to-b from-pink-50/60 to-white text-center">
   <div class="max-w-3xl mx-auto">
 
     <!-- Badge social proof -->
@@ -236,7 +239,7 @@
         🏆 #23 no Ranking
       </div>
       <div class="absolute -bottom-3 -left-3 bg-white border border-pink-200 rounded-xl px-3 py-1.5 shadow-md text-xs font-bold text-gray-700">
-        🔥 7 dias de streak!
+        <span class="streak-fire">🔥</span> 7 dias de streak!
       </div>
     </div>
   </div>
@@ -261,31 +264,6 @@
   </div>
 </section>
 
-<!-- ================================================ -->
-<!-- SOCIAL PROOF BAR -->
-<!-- ================================================ -->
-<section class="py-6 bg-pink-50 border-y border-pink-100">
-  <div class="max-w-4xl mx-auto px-4">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-      <div class="fade-in-up flex flex-col items-center gap-1">
-        <span class="text-2xl">✅</span>
-        <span class="font-bold text-gray-800 text-sm">2.000+ alunas ativas</span>
-      </div>
-      <div class="fade-in-up delay-1 flex flex-col items-center gap-1">
-        <span class="text-2xl">⭐</span>
-        <span class="font-bold text-gray-800 text-sm">Avaliação 5 estrelas</span>
-      </div>
-      <div class="fade-in-up delay-2 flex flex-col items-center gap-1">
-        <span class="text-2xl">🎙️</span>
-        <span class="font-bold text-gray-800 text-sm">Método O.I.R. validado</span>
-      </div>
-      <div class="fade-in-up delay-3 flex flex-col items-center gap-1">
-        <span class="text-2xl">🏆</span>
-        <span class="font-bold text-gray-800 text-sm">Ranking gamificado</span>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ================================================ -->
 <!-- PROBLEMA -->
@@ -394,9 +372,14 @@
         </div>
         <!-- Nome -->
         <div class="text-white font-bold mb-1">Pilarita</div>
-        <div class="flex items-center justify-center gap-1 text-xs text-white/70 mb-4">
-          <span class="w-1.5 h-1.5 rounded-full bg-green-300 animate-pulse inline-block"></span>
-          Ao vivo — ouvindo você...
+        <div class="flex items-center justify-center gap-2 mb-4">
+          <span class="w-1.5 h-1.5 rounded-full bg-green-300 animate-pulse inline-block flex-shrink-0"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="wave-bar"></span>
+          <span class="text-white/60 text-xs ml-1">ao vivo</span>
         </div>
         <!-- Legenda -->
         <div class="bg-white/20 rounded-2xl px-4 py-2.5 text-white text-sm font-medium mb-4">
@@ -869,22 +852,71 @@
     icon.style.transform = open ? 'rotate(0deg)' : '';
   }
 
-  /* ── HAMBURGER MENU ── */
-  let menuOpen = false;
-  function toggleMenu() {
-    menuOpen = !menuOpen;
-    document.getElementById('mobile-menu').classList.toggle('open', menuOpen);
-    document.getElementById('h1').style.transform = menuOpen ? 'rotate(45deg) translate(4px, 4px)' : '';
-    document.getElementById('h2').style.opacity  = menuOpen ? '0' : '1';
-    document.getElementById('h3').style.transform = menuOpen ? 'rotate(-45deg) translate(4px, -4px)' : '';
-  }
-  function closeMenu() {
-    menuOpen = false;
-    document.getElementById('mobile-menu').classList.remove('open');
-    document.getElementById('h1').style.transform = '';
-    document.getElementById('h2').style.opacity  = '1';
-    document.getElementById('h3').style.transform = '';
-  }
+  /* ── CONTADOR ANIMADO (barra de social proof) ── */
+  (function() {
+    function animateCount(el, target, duration) {
+      if (!el) return;
+      const start = performance.now();
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const val = Math.floor(eased * target);
+        el.textContent = val >= 1000
+          ? Math.floor(val / 1000) + '.' + String(val % 1000).padStart(3, '0')
+          : val;
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+    setTimeout(function() {
+      animateCount(document.getElementById('counter-alunas'),  2000, 1600);
+      animateCount(document.getElementById('counter-fluentes'), 3000, 2000);
+    }, 600);
+  })();
+
+  /* ── TOAST DE ATIVIDADE ── */
+  (function() {
+    const people = [
+      ['Juliana', 'São Paulo, SP',        'Plano Fluência'],
+      ['Fernanda','Curitiba, PR',          'Plano Fluência'],
+      ['Camila',  'Belo Horizonte, MG',    'Plano Básico'],
+      ['Beatriz', 'Rio de Janeiro, RJ',    'Plano Fluência'],
+      ['Mariane', 'Florianópolis, SC',     'Plano Fluência'],
+      ['Patrícia','Porto Alegre, RS',      'Plano Básico'],
+      ['Andressa','Brasília, DF',          'Plano Fluência'],
+      ['Larissa', 'Recife, PE',            'Plano Básico'],
+      ['Viviane', 'Goiânia, GO',           'Plano Fluência'],
+      ['Renata',  'Salvador, BA',          'Plano Fluência'],
+      ['Aline',   'Fortaleza, CE',         'Plano Básico'],
+      ['Thaís',   'Manaus, AM',            'Plano Fluência'],
+    ];
+    let idx = Math.floor(Math.random() * people.length);
+
+    function showToast() {
+      const [name, city, plan] = people[idx % people.length];
+      idx++;
+      const wrap = document.getElementById('toast-container');
+      if (!wrap) return;
+      const t = document.createElement('div');
+      t.className = 'toast-enter bg-white border border-pink-100 rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 pointer-events-auto';
+      t.style.maxWidth = '272px';
+      t.innerHTML =
+        '<div class="w-8 h-8 rounded-full bg-gradient-rosa flex-shrink-0 flex items-center justify-center text-white font-bold text-xs">' + name[0] + '</div>' +
+        '<div>' +
+          '<div class="font-semibold text-gray-900 text-xs leading-tight">' + name + ' de ' + city + '</div>' +
+          '<div class="text-gray-400 text-xs mt-0.5">acaba de se inscrever · <span class="text-rosa font-semibold">' + plan + '</span></div>' +
+        '</div>';
+      wrap.appendChild(t);
+      setTimeout(function() {
+        t.classList.remove('toast-enter');
+        t.classList.add('toast-exit');
+        setTimeout(function() { t.remove(); }, 380);
+      }, 4800);
+    }
+
+    setTimeout(showToast, 8000);
+    setInterval(showToast, 44000);
+  })();
 
   /* ── SCROLL REVEAL ── */
   const observer = new IntersectionObserver((entries) => {
@@ -937,6 +969,11 @@
     setInterval(renderCountdown, 1000);
   })();
 </script>
+
+<!-- ================================================ -->
+<!-- TOAST CONTAINER -->
+<!-- ================================================ -->
+<div id="toast-container" class="fixed bottom-24 md:bottom-6 left-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
 <!-- ================================================ -->
 <!-- BARRA CTA FIXA — MOBILE -->
